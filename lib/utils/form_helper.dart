@@ -2,31 +2,20 @@ import 'package:flutter/material.dart';
 
 class FormHelper {
   static Widget textInput(
-    BuildContext context,
-    Object initialValue,
-    Function onChanged, {
-    bool isTextArea = false,
-    bool isNumberInput = false,
-    obscureText: false,
-    required Function onValidate,
-    Widget prefixIcon = const Icon(
-      Icons.favorite,
-      color: Colors.pink,
-      size: 24.0,
-    ),
-    Widget suffixIcon = const Icon(
-      Icons.favorite,
-      color: Colors.pink,
-      size: 24.0,
-    ),
-  }) {
+      BuildContext context, Object initialValue, Function onChanged,
+      {bool isTextArea = false,
+      bool isNumberInput = false,
+      obscureText: false,
+      required Function onValidate,
+      dynamic prefixIcon,
+      dynamic suffixIcon}) {
     return Container(
       alignment: Alignment.center,
       child: Container(
         width: MediaQuery.of(context).size.width - 40,
         child: TextFormField(
           initialValue: initialValue != null ? initialValue.toString() : "",
-          decoration: fieldDecoration(context, "", "", SizedBox(), SizedBox()),
+          decoration: fieldDecoration(context, "", "", prefixIcon, suffixIcon),
           obscureText: obscureText,
           maxLines: !isTextArea ? 1 : 3,
           keyboardType:
@@ -43,13 +32,13 @@ class FormHelper {
   }
 
   static InputDecoration fieldDecoration(BuildContext context, String hintText,
-      String helperText, Widget suffixIcon, Widget prefixIcon) {
+      String helperText, dynamic suffixIcon, dynamic prefixIcon) {
     return InputDecoration(
-      contentPadding: EdgeInsets.all(6),
+      contentPadding: EdgeInsets.only(right: 10, left: 10),
       hintText: hintText,
       helperText: helperText,
-      prefixIcon: prefixIcon,
-      suffixIcon: suffixIcon,
+      prefixIcon: prefixIcon ?? null,
+      suffixIcon: suffixIcon ?? null,
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Theme.of(context).primaryColor,
@@ -81,10 +70,11 @@ class FormHelper {
   static Widget saveButton(String buttonText, Function onTap,
       {required String color,
       required String textColor,
-      required bool fullWidth}) {
+      required bool fullWidth,
+      bool isLoading = false}) {
     return Container(
       height: 50.0,
-      width: 150,
+      width: 170,
       child: GestureDetector(
         onTap: () {
           onTap();
@@ -97,21 +87,30 @@ class FormHelper {
               width: 1.0,
             ),
             color: Colors.redAccent,
-            borderRadius: BorderRadius.circular(30.0),
+            borderRadius: BorderRadius.circular(20.0),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1,
-                  ),
-                ),
+                child: isLoading
+                    ? SizedBox(
+                        height: 25,
+                        width: 25,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2.5,
+                        ),
+                      )
+                    : Text(
+                        buttonText,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1,
+                        ),
+                      ),
               ),
             ],
           ),
@@ -134,7 +133,7 @@ class FormHelper {
           title: new Text(title),
           content: new Text(message),
           actions: [
-            new FlatButton(
+            new MaterialButton(
               onPressed: () {
                 return onPressed();
               },

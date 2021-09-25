@@ -80,91 +80,108 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
           ),
-          FormHelper.fieldLabel("First Name"),
-          FormHelper.textInput(context, _customerModel.firstName,
-              (value) => {this._customerModel.firstName = value},
-              onValidate: (onValidateVal) {
-            if (onValidateVal.toString().isEmpty) {
-              return 'Email can\'t be empty.';
-            }
-            return null;
-          }),
-          FormHelper.fieldLabel("Last Name"),
-          FormHelper.textInput(context, _customerModel.lastName,
-              (value) => {this._customerModel.lastName = value},
-              onValidate: (onValidateVal) {
-            return null;
-          }),
-          FormHelper.fieldLabel("Email"),
-          FormHelper.textInput(context, _customerModel.email,
-              (value) => {this._customerModel.email = value},
-              onValidate: (onValidateVal) {
-            if (onValidateVal.toString().isEmpty) {
-              return 'Email can\'t be empty.';
-            }
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(onValidateVal);
-            if (!emailValid) {
-              return 'Email Invalid!';
-            }
-            return null;
-          }),
-          FormHelper.fieldLabel("Password"),
-          FormHelper.textInput(
-            context,
-            _customerModel.password,
-            (value) => {this._customerModel.password = value},
-            onValidate: (onValidateVal) {
-              if (onValidateVal.toString().isEmpty) {
-                return 'Password can\'t be empty.';
-              }
-              return null;
-            },
-            obscureText: hidePassword,
-          ),
-          new Center(
-            child: FormHelper.saveButton(
-              "Register",
-              () {
-                if (validateAndSave()) {
-                  setState(() {
-                    this.isApiCallProcess = true;
-                  });
-
-                  _apiService.createCustomer(_customerModel).then((ret) {
-                    setState(() {
-                      this.isApiCallProcess = false;
-                    });
-                    if (ret) {
-                      FormHelper.showMessage(
-                        context,
-                        "WooCommerce App",
-                        "Register Successfully !",
-                        "Ok",
-                        () {
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    } else {
-                      FormHelper.showMessage(
-                        context,
-                        "WooCommerce App",
-                        "Register fail !",
-                        "Ok",
-                        () {
-                          Navigator.of(context).pop();
-                        },
-                      );
+          Form(
+              key: globalKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FormHelper.fieldLabel("First Name"),
+                  FormHelper.textInput(context, _customerModel.firstName,
+                      (value) => {this._customerModel.firstName = value},
+                      onValidate: (onValidateVal) {
+                    if (onValidateVal.toString().isEmpty) {
+                      return 'Email can\'t be empty.';
                     }
-                  });
-                }
-              },
-              fullWidth: true,
-              color: '',
-              textColor: '',
-            ),
-          ),
+                    return null;
+                  }),
+                  FormHelper.fieldLabel("Last Name"),
+                  FormHelper.textInput(context, _customerModel.lastName,
+                      (value) => {this._customerModel.lastName = value},
+                      onValidate: (onValidateVal) {
+                    if (onValidateVal.toString().isEmpty) {
+                      return 'Last Name can\'t be empty.';
+                    }
+                    return null;
+                  }),
+                  FormHelper.fieldLabel("Email"),
+                  FormHelper.textInput(context, _customerModel.email,
+                      (value) => {this._customerModel.email = value},
+                      onValidate: (onValidateVal) {
+                    if (onValidateVal.toString().isEmpty) {
+                      return 'Email can\'t be empty.';
+                    }
+                    bool emailValid = RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        .hasMatch(onValidateVal);
+                    if (!emailValid) {
+                      return 'Email Invalid!';
+                    }
+                    return null;
+                  }),
+                  FormHelper.fieldLabel("Password"),
+                  FormHelper.textInput(context, _customerModel.password,
+                      (value) => {this._customerModel.password = value},
+                      onValidate: (onValidateVal) {
+                    if (onValidateVal.toString().isEmpty) {
+                      return 'Password can\'t be empty.';
+                    }
+                    return null;
+                  },
+                      obscureText: hidePassword,
+                      prefixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              hidePassword = !hidePassword;
+                            });
+                          },
+                          icon: Icon(hidePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility))),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  new Center(
+                    child: FormHelper.saveButton("Register", () {
+                      if (validateAndSave()) {
+                        setState(() {
+                          this.isApiCallProcess = true;
+                        });
+
+                        _apiService.createCustomer(_customerModel).then((ret) {
+                          setState(() {
+                            this.isApiCallProcess = false;
+                          });
+                          if (ret) {
+                            FormHelper.showMessage(
+                              context,
+                              "Welcome to FluFood",
+                              "Register Successfully !",
+                              "Ok",
+                              () {
+                                Navigator.of(context).pop();
+                              },
+                            );
+                          } else {
+                            FormHelper.showMessage(
+                              context,
+                              "Oh! Sorry",
+                              "Register fail !",
+                              "Ok",
+                              () {
+                                Navigator.of(context).pop();
+                              },
+                            );
+                          }
+                        });
+                      }
+                    },
+                        fullWidth: true,
+                        color: '',
+                        textColor: '',
+                        isLoading: isApiCallProcess),
+                  ),
+                ],
+              )),
           SizedBox(
             height: 50,
           ),

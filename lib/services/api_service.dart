@@ -1,31 +1,23 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:flufood/config.dart';
 import 'package:flufood/models/customer.dart';
-import 'package:dio/dio.dart';
+import 'package:flufood/services/api_contanst.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:woocommerce_api/woocommerce_api.dart';
 
 class ApiService {
+  WooCommerceAPI wooCommerceAPI = WooCommerceAPI(
+    url: dotenv.env['WOO_COMMERCE_URL']!,
+    consumerKey: dotenv.env['CONSUMER_KEY']!,
+    consumerSecret: dotenv.env['SECRET_KET']!,
+  );
+
   Future<bool> createCustomer(CustomerModel model) async {
-    var authToken =
-        base64.encode(utf8.encode(Config.key + ":" + Config.secret));
     bool ret = false;
     try {
-      var response = await Dio().post(Config.url + Config.customerURL,
-          data: model.toJson(),
-          options: new Options(headers: {
-            HttpHeaders.authorizationHeader: 'Basic $authToken',
-            HttpHeaders.contentTypeHeader: "application/json"
-          }));
-      if (response.statusCode == 201) {
-        ret = true;
-      }
-    } on DioError catch (err) {
-      if (err.response?.statusCode == 404) {
-        ret = false;
-      } else {
-        ret = false;
-      }
+      await wooCommerceAPI.postAsync(ApiConfig.customers, model.toJson());
+      ret = true;
+    } catch (err) {
+      print(err);
+      ret = false;
     }
     return ret;
   }
