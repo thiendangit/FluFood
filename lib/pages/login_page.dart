@@ -111,8 +111,6 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 20),
                         new TextFormField(
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
                           keyboardType: TextInputType.text,
                           onSaved: (input) => {
                             if (input != null) {password = input}

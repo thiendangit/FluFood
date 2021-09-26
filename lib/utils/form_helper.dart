@@ -41,13 +41,13 @@ class FormHelper {
       suffixIcon: suffixIcon ?? null,
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).focusColor,
           width: 1,
         ),
       ),
       border: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).accentColor,
           width: 1,
         ),
       ),

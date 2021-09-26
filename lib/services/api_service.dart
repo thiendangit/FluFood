@@ -1,3 +1,4 @@
+import 'package:flufood/models/category.dart';
 import 'package:flufood/models/customer.dart';
 import 'package:flufood/models/login.dart';
 import 'package:flufood/services/api_contanst.dart';
@@ -49,5 +50,18 @@ class ApiService {
       return null;
     }
     return null;
+  }
+
+  Future<List<Category>> getCategories() async {
+    List<Category> categories = [];
+    try {
+      var res = await wooCommerceAPI.getAsync(ApiConfig.categories);
+      categories = (res).map((e) => categoryFromJson(e)) as List<Category>;
+      categories.toList();
+      return categories;
+    } catch (err) {
+      print(err);
+    }
+    return categories;
   }
 }
