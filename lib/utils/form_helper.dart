@@ -68,7 +68,8 @@ class FormHelper {
   }
 
   static Widget saveButton(String buttonText, Function onTap,
-      {required String color,
+      {required BuildContext context,
+      required String color,
       required String textColor,
       required bool fullWidth,
       bool isLoading = false}) {
@@ -82,11 +83,11 @@ class FormHelper {
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-              color: Colors.redAccent,
+              color: Theme.of(context).accentColor,
               style: BorderStyle.solid,
               width: 1.0,
             ),
-            color: Colors.redAccent,
+            color: Theme.of(context).accentColor,
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: Row(

@@ -14,7 +14,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late CustomerModel _customerModel;
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   bool hidePassword = true;
-  bool isApiCallProcess = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -32,11 +32,11 @@ class _SignUpPageState extends State<SignUpPage> {
           automaticallyImplyLeading: true,
           title: Text('Sign Up'),
           shadowColor: Colors.transparent),
-      body: _formUI(),
+      body: _formUI(context),
     );
   }
 
-  Widget _formUI() {
+  Widget _formUI(BuildContext context) {
     return new SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,7 +49,11 @@ class _SignUpPageState extends State<SignUpPage> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Colors.redAccent, Colors.redAccent, Colors.white10],
+                colors: [
+                  Theme.of(context).accentColor,
+                  Theme.of(context).accentColor,
+                  Theme.of(context).primaryColor
+                ],
               ),
               borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(150),
@@ -144,12 +148,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: FormHelper.saveButton("Register", () {
                       if (validateAndSave()) {
                         setState(() {
-                          this.isApiCallProcess = true;
+                          this.isLoading = true;
                         });
 
                         _apiService.createCustomer(_customerModel).then((ret) {
                           setState(() {
-                            this.isApiCallProcess = false;
+                            this.isLoading = false;
                           });
                           if (ret) {
                             FormHelper.showMessage(
@@ -175,10 +179,11 @@ class _SignUpPageState extends State<SignUpPage> {
                         });
                       }
                     },
+                        context: context,
                         fullWidth: true,
                         color: '',
                         textColor: '',
-                        isLoading: isApiCallProcess),
+                        isLoading: isLoading),
                   ),
                 ],
               )),

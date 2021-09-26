@@ -1,3 +1,4 @@
+import 'package:flufood/pages/login_page.dart';
 import 'package:flufood/pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,8 +13,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FluFood',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: 'Poppins',
+        primaryColor: Colors.white,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+            elevation: 0, foregroundColor: Colors.white),
+        accentColor: Colors.redAccent,
+        textTheme: TextTheme(
+            headline1: TextStyle(fontSize: 22.0, color: Colors.redAccent),
+            headline2: TextStyle(
+              fontSize: 24.0,
+              color: Colors.redAccent,
+              fontWeight: FontWeight.w700,
+            ),
+            bodyText1: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.redAccent)),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -25,8 +43,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false,
-      home: SignUpPage(),
+      home: LoginPage(),
     );
   }
 }

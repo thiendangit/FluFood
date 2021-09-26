@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  dio: ^4.0.0
   flutter:
     sdk: flutter
 
@@ -30,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_dotenv: ^5.0.2
   woocommerce_api: ^0.1.0
+
 
 dev_dependencies:
   flutter_test:
