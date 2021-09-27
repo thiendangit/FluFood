@@ -3,7 +3,7 @@ class LoginResponseModel {
 
   LoginResponseModel({required this.data});
 
-  LoginResponseModel.fromJson(Map<String, dynamic> json) {
+  LoginResponseModel.fromJson(Map json) {
     data = new Data.fromJson(json);
   }
 
@@ -27,7 +27,7 @@ class Data {
   String cookieName;
   User user;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory Data.fromJson(Map json) => Data(
       cookie: json["cookie"],
       cookieName: json["cookie_name"],
       user: User.fromJson(json["user"]));

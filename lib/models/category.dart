@@ -6,57 +6,35 @@ import 'dart:convert';
 
 Category categoryFromJson(String str) => Category.fromJson(json.decode(str));
 
-String categoryToJson(Category data) => json.encode(data.toJson());
-
 class Category {
+  late int id;
+  late String name;
+  late String slug;
+  late int parent;
+  ImageType? image;
+
   Category({
-    required this.id,
-    required this.name,
-    required this.slug,
-    required this.parent,
-    required this.description,
-    required this.display,
-    required this.image,
-    required this.menuOrder,
-    required this.count,
-    required this.links,
+    this.id = 1,
+    this.name = "",
+    this.slug = "",
+    this.parent = 1,
+    this.image,
   });
 
-  int id;
-  String name;
-  String slug;
-  int parent;
-  String description;
-  String display;
-  List<dynamic> image;
-  int menuOrder;
-  int count;
-  Links links;
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        name: json["name"],
-        slug: json["slug"],
-        parent: json["parent"],
-        description: json["description"],
-        display: json["display"],
-        image: List<dynamic>.from(json["image"].map((x) => x)),
-        menuOrder: json["menu_order"],
-        count: json["count"],
-        links: Links.fromJson(json["_links"]),
-      );
+  Category.fromJson(Map<String, dynamic> json) {
+    id = json["id"];
+    name = json["name"];
+    slug = json["slug"];
+    parent = json["parent"];
+    image = json["image"] == null ? null : ImageType.fromJson(json["image"]);
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "slug": slug,
         "parent": parent,
-        "description": description,
-        "display": display,
-        "image": List<dynamic>.from(image.map((x) => x)),
-        "menu_order": menuOrder,
-        "count": count,
-        "_links": links.toJson(),
+        "image": image != null ? image!.toJson() : null,
       };
 }
 
@@ -84,6 +62,50 @@ class Links {
         "self": List<dynamic>.from(self.map((x) => x.toJson())),
         "collection": List<dynamic>.from(collection.map((x) => x.toJson())),
         "up": List<dynamic>.from(up.map((x) => x.toJson())),
+      };
+}
+
+class ImageType {
+  ImageType({
+    required this.id,
+    required this.dateCreated,
+    required this.dateCreatedGmt,
+    required this.dateModified,
+    required this.dateModifiedGmt,
+    required this.src,
+    required this.name,
+    required this.alt,
+  });
+
+  int id;
+  DateTime? dateCreated;
+  DateTime? dateCreatedGmt;
+  DateTime? dateModified;
+  DateTime? dateModifiedGmt;
+  String? src;
+  String? name;
+  String? alt;
+
+  factory ImageType.fromJson(Map<String, dynamic> json) => ImageType(
+        id: json["id"],
+        dateCreated: DateTime.parse(json["date_created"]),
+        dateCreatedGmt: DateTime.parse(json["date_created_gmt"]),
+        dateModified: DateTime.parse(json["date_modified"]),
+        dateModifiedGmt: DateTime.parse(json["date_modified_gmt"]),
+        src: json["src"],
+        name: json["name"],
+        alt: json["alt"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "date_created": dateCreated?.toIso8601String(),
+        "date_created_gmt": dateCreatedGmt?.toIso8601String(),
+        "date_modified": dateModified?.toIso8601String(),
+        "date_modified_gmt": dateModifiedGmt?.toIso8601String(),
+        "src": src,
+        "name": name,
+        "alt": alt,
       };
 }
 

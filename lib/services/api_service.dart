@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flufood/models/category.dart';
 import 'package:flufood/models/customer.dart';
 import 'package:flufood/models/login.dart';
@@ -55,9 +57,8 @@ class ApiService {
   Future<List<Category>> getCategories() async {
     List<Category> categories = [];
     try {
-      var res = await wooCommerceAPI.getAsync(ApiConfig.categories);
-      categories = (res).map((e) => categoryFromJson(e)) as List<Category>;
-      categories.toList();
+      List<dynamic> res = await wooCommerceAPI.getAsync(ApiConfig.categories);
+      categories = (res).map((e) => categoryFromJson(json.encode(e))).toList();
       return categories;
     } catch (err) {
       print(err);
