@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flufood/services/api_contanst.dart';
 import 'package:flufood/widgets/widget_home_categories.dart';
+import 'package:flufood/widgets/widget_home_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +28,8 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Container(
+          child: ListView(
         children: [
           Stack(children: <Widget>[
             Container(
@@ -71,9 +74,15 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
           ]),
-          WidgetCategories()
+          WidgetCategories(),
+          WidgetHomeProducts(
+              labelName: "Best selling products",
+              tagId: ApiConfig.bestSellingTagID),
+          WidgetHomeProducts(
+              labelName: "Recommend for you",
+              tagId: ApiConfig.recommendTagID),
         ],
-      ),
+      )),
     );
   }
 

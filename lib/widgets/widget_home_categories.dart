@@ -48,7 +48,7 @@ class _WidgetCategoriesState extends State<WidgetCategories> {
               )
             ],
           ),
-          _categoriesList()
+          _categoriesList(),
         ],
       ),
     );
@@ -73,7 +73,7 @@ class _WidgetCategoriesState extends State<WidgetCategories> {
 
   Widget _buildCategoryList(List<Category>? categories) {
     return Container(
-      height: 150,
+      height: 130,
       alignment: Alignment.centerLeft,
       child: ListView.builder(
           shrinkWrap: true,

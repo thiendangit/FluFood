@@ -13,9 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Widget> _widgetList = [
     DashboardPage(),
-    DashboardPage(),
-    DashboardPage(),
-    DashboardPage(),
   ];
   int _index = 0;
 
