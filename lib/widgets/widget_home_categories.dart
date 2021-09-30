@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flufood/models/category.dart';
+import 'package:flufood/pages/product_page.dart';
 import 'package:flufood/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -82,41 +83,49 @@ class _WidgetCategoriesState extends State<WidgetCategories> {
           physics: ClampingScrollPhysics(),
           itemBuilder: (context, idx) {
             Category item = categories![idx];
-            return Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  width: 80,
-                  height: 80,
-                  alignment: Alignment.center,
-                  child: item.image?.src != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: Image.network(item.image!.src!,
-                              height: 80, width: 80, fit: BoxFit.cover),
-                        )
-                      : Icon(Icons.ac_unit),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black12,
-                            offset: Offset(0, 5),
-                            blurRadius: 15)
-                      ]),
-                ),
-                Row(
+            return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ProductPage(categoryId: item.id)));
+                },
+                child: Column(
                   children: [
-                    Text(item.name),
-                    Icon(
-                      Icons.keyboard_arrow_right,
-                      size: 14,
+                    Container(
+                      margin: EdgeInsets.all(10),
+                      width: 80,
+                      height: 80,
+                      alignment: Alignment.center,
+                      child: item.image?.src != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(40),
+                              child: Image.network(item.image!.src!,
+                                  height: 80, width: 80, fit: BoxFit.cover),
+                            )
+                          : Icon(Icons.ac_unit),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black12,
+                                offset: Offset(0, 5),
+                                blurRadius: 15)
+                          ]),
+                    ),
+                    Row(
+                      children: [
+                        Text(item.name),
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          size: 14,
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            );
+                ));
           }),
     );
   }

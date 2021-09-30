@@ -67,9 +67,35 @@ class ApiService {
     return categories;
   }
 
-  Future<List<Product>> getProducts({String tagName = ""}) async {
+  Future<List<Product>> getProducts(
+      {String tagName = "",
+      int pageNumber = 1,
+      int pageSize = 10,
+      String strSearch = '',
+      String categoryId = '',
+      String sortBy = '',
+      String sortOrder = 'asc'}) async {
     List<Product> products = [];
-    var url = ApiConfig.products + (tagName != "" ? "?tag=$tagName" : "");
+    String parameter = '';
+    if (strSearch != '') {
+      parameter += '&search=$strSearch';
+    }
+    parameter += '&per_page=$pageSize';
+    parameter += '&page=$pageNumber';
+    parameter += '&order=$sortOrder';
+    if (tagName != '') {
+      parameter += '&tag=$tagName';
+    }
+    if (strSearch != '') {
+      parameter += '&search=$strSearch';
+    }
+    if (categoryId != '') {
+      parameter += '&category=$categoryId';
+    }
+    if (sortBy != '') {
+      parameter += '&orderby=$sortBy';
+    }
+    var url = ApiConfig.products + "?" + parameter;
     try {
       List<dynamic> res = await wooCommerceAPI.getAsync(url);
       print(res.toString());
