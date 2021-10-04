@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProgressHUD extends StatelessWidget {
   final Widget child;
-  final bool isLoading;
+  final dynamic isLoading;
   final double opacity;
   final Color color;
 

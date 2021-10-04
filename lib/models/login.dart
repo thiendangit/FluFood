@@ -112,7 +112,7 @@ class Capabilities {
     required this.customer,
   });
 
-  bool customer;
+  dynamic customer;
 
   factory Capabilities.fromJson(Map<String, dynamic> json) => Capabilities(
         customer: json["customer"],

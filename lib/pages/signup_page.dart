@@ -13,8 +13,8 @@ class _SignUpPageState extends State<SignUpPage> {
   late ApiService _apiService;
   late CustomerModel _customerModel;
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-  bool hidePassword = true;
-  bool isLoading = false;
+  dynamic hidePassword = true;
+  dynamic isLoading = false;
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (onValidateVal.toString().isEmpty) {
                       return 'Email can\'t be empty.';
                     }
-                    bool emailValid = RegExp(
+                    dynamic emailValid = RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(onValidateVal);
                     if (!emailValid) {
@@ -195,7 +195,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  bool validateAndSave() {
+  dynamic validateAndSave() {
     final form = globalKey.currentState;
     if (form!.validate()) {
       form.save();

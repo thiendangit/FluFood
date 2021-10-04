@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class FormHelper {
   static Widget textInput(
       BuildContext context, Object initialValue, Function onChanged,
-      {bool isTextArea = false,
-      bool isNumberInput = false,
+      {dynamic isTextArea = false,
+      dynamic isNumberInput = false,
       obscureText: false,
       required Function onValidate,
       dynamic prefixIcon,
@@ -71,8 +71,8 @@ class FormHelper {
       {required BuildContext context,
       required String color,
       required String textColor,
-      required bool fullWidth,
-      bool isLoading = false}) {
+      required dynamic fullWidth,
+      dynamic isLoading = false}) {
     return Container(
       height: 50.0,
       width: 170,

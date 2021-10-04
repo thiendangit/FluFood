@@ -18,8 +18,8 @@ class ApiService {
     consumerSecret: dotenv.env['SECRET_KET']!,
   );
 
-  Future<bool> createCustomer(CustomerModel model) async {
-    bool ret = false;
+  Future<dynamic> createCustomer(CustomerModel model) async {
+    dynamic ret = false;
     try {
       await wooCommerceAPI.postAsync(ApiConfig.customers, model.toJson());
       ret = true;
@@ -73,7 +73,9 @@ class ApiService {
       int pageSize = 10,
       String strSearch = '',
       String categoryId = '',
-      String sortBy = '',
+      // sortBy: date, id, include, title, slug, price, popularity and rating. Default is date.
+      String sortBy = 'date',
+      // sortOrder sort attribute ascending or descending. Options: asc and desc. Default is desc
       String sortOrder = 'asc'}) async {
     List<Product> products = [];
     String parameter = '';

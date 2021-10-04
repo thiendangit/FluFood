@@ -10,7 +10,7 @@ class BasePage extends StatefulWidget {
 }
 
 class BasePageState<T extends BasePage> extends State<T> {
-  bool isLoading = false;
+  dynamic isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +36,9 @@ class BasePageState<T extends BasePage> extends State<T> {
       elevation: 0,
       backgroundColor: Colors.redAccent,
       automaticallyImplyLeading: true,
+      iconTheme: IconThemeData(
+        color: Colors.white, //change your color here
+      ),
       actions: [
         Icon(Icons.notifications_none, color: Colors.white),
         SizedBox(width: 10),

@@ -4,6 +4,7 @@
 import 'dart:convert';
 
 Product productFromJson(String str) => Product.fromJson(json.decode(str));
+
 String productToJson(Product data) => json.encode(data.toJson());
 
 class Product {
@@ -88,7 +89,7 @@ class Product {
   DateTime dateModifiedGmt;
   String type;
   String status;
-  bool featured;
+  dynamic featured;
   String catalogVisibility;
   String description;
   String shortDescription;
@@ -101,11 +102,11 @@ class Product {
   dynamic dateOnSaleTo;
   dynamic dateOnSaleToGmt;
   String priceHtml;
-  bool onSale;
-  bool purchasable;
+  dynamic onSale;
+  dynamic purchasable;
   int totalSales;
-  bool virtual;
-  bool downloadable;
+  dynamic virtual;
+  dynamic downloadable;
   List<dynamic> downloads;
   int downloadLimit;
   int downloadExpiry;
@@ -113,20 +114,20 @@ class Product {
   String buttonText;
   String taxStatus;
   String taxClass;
-  bool manageStock;
+  dynamic manageStock;
   int? stockQuantity;
-  bool inStock;
+  dynamic inStock;
   String backorders;
-  bool backordersAllowed;
-  bool backordered;
-  bool soldIndividually;
+  dynamic backordersAllowed;
+  dynamic backordered;
+  dynamic soldIndividually;
   String weight;
   Dimensions dimensions;
-  bool shippingRequired;
-  bool shippingTaxable;
+  dynamic shippingRequired;
+  dynamic shippingTaxable;
   String shippingClass;
   int shippingClassId;
-  bool reviewsAllowed;
+  dynamic reviewsAllowed;
   String averageRating;
   int ratingCount;
   List<int> relatedIds;
@@ -165,7 +166,9 @@ class Product {
         sku: json["sku"],
         price: json["price"],
         regularPrice: json["regular_price"],
-        salePrice: json["sale_price"],
+        salePrice: json["sale_price"] != ''
+            ? json["sale_price"]
+            : json["regular_price"],
         dateOnSaleFrom: json["date_on_sale_from"],
         dateOnSaleFromGmt: json["date_on_sale_from_gmt"],
         dateOnSaleTo: json["date_on_sale_to"],
@@ -299,6 +302,17 @@ class Product {
             .map((k, v) => MapEntry<String, dynamic>(k, v.toJson())),
         "_links": links.toJson(),
       };
+
+  calculateDiscount() {
+    if (this.regularPrice != '') {
+      double regularPrice = double.parse(this.regularPrice as String);
+      double salesPrice =
+          this.salePrice != '' ? double.parse(this.salePrice) : regularPrice;
+      double discount = regularPrice - salesPrice;
+      double disPercent = (discount / regularPrice) * 100;
+      return disPercent.round();
+    }
+  }
 }
 
 class Attribute {
@@ -311,11 +325,11 @@ class Attribute {
     required this.options,
   });
 
-  int id;
+  dynamic id;
   String name;
-  int position;
-  bool visible;
-  bool variation;
+  dynamic position;
+  dynamic visible;
+  dynamic variation;
   List<String> options;
 
   factory Attribute.fromJson(Map<String, dynamic> json) => Attribute(
@@ -374,7 +388,7 @@ class ImageType {
     required this.position,
   });
 
-  int id;
+  dynamic id;
   DateTime dateCreated;
   DateTime dateCreatedGmt;
   DateTime dateModified;
@@ -382,7 +396,7 @@ class ImageType {
   String src;
   String name;
   String alt;
-  int position;
+  dynamic position;
 
   factory ImageType.fromJson(Map<String, dynamic> json) => ImageType(
         id: json["id"],
@@ -454,7 +468,7 @@ class MetaDatum {
     required this.value,
   });
 
-  int id;
+  dynamic id;
   String key;
   dynamic value;
 

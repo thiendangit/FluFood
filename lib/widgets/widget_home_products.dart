@@ -95,6 +95,11 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
             var salesPriceDisplay = salesPrice != realPrice
                 ? salesPrice
                 : int.parse((salesPrice ?? '0')) - 2;
+
+            var image = (item.images!.length > 0 && item.images![0].src != null)
+                ? item.images![0].src
+                : 'https://langmaster.edu.vn/public/files/no-photo.png';
+
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -104,13 +109,11 @@ class _WidgetHomeProductsState extends State<WidgetHomeProducts> {
                   width: 120,
                   height: 120,
                   alignment: Alignment.center,
-                  child: item.images![0].src != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Image.network(item.images![0].src,
-                              height: 120, width: 120, fit: BoxFit.fill),
-                        )
-                      : Icon(Icons.ac_unit),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(4),
+                    child: Image.network(image,
+                        height: 120, width: 120, fit: BoxFit.fill),
+                  ),
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(4),

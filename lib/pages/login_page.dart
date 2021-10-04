@@ -9,8 +9,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isLoading = false;
-  bool hidePassword = true;
+  dynamic isLoading = false;
+  dynamic hidePassword = true;
   GlobalKey<FormState> globalKey = new GlobalKey<FormState>();
   late ApiService _apiService;
   String username = '';
@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  bool validateAndSave() {
+  dynamic validateAndSave() {
     final form = globalKey.currentState;
     if (form!.validate()) {
       form.save();

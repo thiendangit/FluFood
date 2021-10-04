@@ -27,18 +27,24 @@ class _ProductCardState extends State<ProductCard> {
         : item.price != ""
             ? item.price
             : '0';
+    // var salesPriceFormat = salesPrice.runtimeType == int
+    //     ? int.parse(salesPrice.toString() != '' ? salesPrice.toString() : '0')
+    //     : double.parse(
+    //         salesPrice.toString() != '' ? salesPrice.toString() : '0');
     var salesPriceDisplay = salesPrice.toString() != realPrice.toString()
         ? salesPrice.toString()
-        : int.parse(salesPrice.toString() != '' ? salesPrice.toString() : '0') >
-                0
-            ? int.parse(salesPrice.toString()) - 2
-            : '0';
+        : '0';
+
+    var image = (item.images!.length > 0 && item.images![0].src != null)
+        ? item.images![0].src
+        : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png';
+
     return Column(
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+          margin: EdgeInsets.only(top: 5, bottom: 5, left: 10, right: 10),
           child: Container(
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+              padding: EdgeInsets.only(bottom: 5),
               child: Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
@@ -47,14 +53,12 @@ class _ProductCardState extends State<ProductCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                        child: item.images![0].src != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(4),
-                                child: Image.network(item.images![0].src,
-                                    height: 120, width: 120, fit: BoxFit.fill),
-                              )
-                            : Icon(Icons.ac_unit),
-                      ),
+                          margin: EdgeInsets.symmetric(vertical: 10),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Image.network(image,
+                                height: 120, width: 120, fit: BoxFit.fill),
+                          )),
                       Container(
                           margin: EdgeInsets.only(top: 4),
                           child: Text(
@@ -65,7 +69,7 @@ class _ProductCardState extends State<ProductCard> {
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
-                            maxLines: 2,
+                            maxLines: 1,
                           )),
                       Container(
                         margin: EdgeInsets.only(top: 4, left: 4),
@@ -99,6 +103,29 @@ class _ProductCardState extends State<ProductCard> {
                       )
                     ],
                   ),
+                  Visibility(
+                      visible: item.calculateDiscount() != null &&
+                          item.calculateDiscount() > 0,
+                      child: Positioned(
+                        top: 5,
+                        left: 5,
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Text(
+                              '${item.calculateDiscount()}% OFF',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                      )),
                 ],
               )),
           decoration: BoxDecoration(
