@@ -7,6 +7,13 @@ Product productFromJson(String str) => Product.fromJson(json.decode(str));
 
 String productToJson(Product data) => json.encode(data.toJson());
 
+class PriceResponse {
+  String? price = '0';
+  String? salesPrice = '0';
+
+  PriceResponse({required this.price, required this.salesPrice});
+}
+
 class Product {
   Product({
     required this.id,
@@ -311,7 +318,28 @@ class Product {
       double discount = regularPrice - salesPrice;
       double disPercent = (discount / regularPrice) * 100;
       return disPercent.round();
+    } else {
+      return 0.0;
     }
+  }
+
+  PriceResponse calculatePrice() {
+    var realPrice = this.salePrice != ""
+        ? this.salePrice
+        : this.regularPrice != ""
+            ? this.regularPrice
+            : this.price != ""
+                ? this.price
+                : '0';
+    var salesPrice = this.regularPrice != ""
+        ? this.regularPrice
+        : this.price != ""
+            ? this.price
+            : '0';
+    var salesPriceDisplay = salesPrice.toString() != realPrice.toString()
+        ? salesPrice.toString()
+        : '0';
+    return PriceResponse(price: realPrice, salesPrice: salesPriceDisplay);
   }
 }
 

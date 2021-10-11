@@ -75,6 +75,7 @@ class ApiService {
       String categoryId = '',
       // sortBy: date, id, include, title, slug, price, popularity and rating. Default is date.
       String sortBy = 'date',
+      List<int>? productIDs,
       // sortOrder sort attribute ascending or descending. Options: asc and desc. Default is desc
       String sortOrder = 'asc'}) async {
     List<Product> products = [];
@@ -96,6 +97,9 @@ class ApiService {
     }
     if (sortBy != '') {
       parameter += '&orderby=$sortBy';
+    }
+    if (productIDs != null) {
+      parameter += '&include=${productIDs.join(',').toString()}';
     }
     var url = ApiConfig.products + "?" + parameter;
     try {
