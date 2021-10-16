@@ -1,3 +1,4 @@
+import 'package:flufood/models/cart.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:io';
@@ -21,9 +22,31 @@ class DBHelper {
     return db;
   }
 
+  // Cart model
+  // int id;
+  // String name;
+  // String sku;
+  // String? price;
+  // String? regularPrice;
+  // String salePrice;
+  // List<ImageType>? images;
+  // int quantity;
   _onCreate(Database database, int version) async {
-    // await database.execute(
-    //   // database.execute('CREATE TABLE cart(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)', version);
-    // );
+    await database.execute(''
+        'CREATE TABLE cart('
+        'id INTEGER PRIMARY KEY,'
+        'name TEXT,'
+        'sku TEXT,'
+        'price INTEGER,'
+        'regularPrice INTEGER,'
+        'salePrice INTEGER,'
+        'quantity INTEGER,'
+        'images BLOB)');
+  }
+
+  Future<Cart?> insert(Cart cart) async {
+    var dbClient = await db;
+    await dbClient?.insert('cart', cart.toJson());
+    return cart;
   }
 }

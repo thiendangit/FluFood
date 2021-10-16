@@ -1,14 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flufood/models/cart.dart';
 import 'package:flufood/models/product.dart';
+import 'package:flufood/provider/cart_provider.dart';
 import 'package:flufood/utils/custom_stepper.dart';
+import 'package:flufood/utils/db_helper.dart';
 import 'package:flufood/utils/expand_text.dart';
 import 'package:flufood/widgets/widget_related_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class ProductDetailWidget extends StatefulWidget {
-  ProductDetailWidget({Key? key, required this.product}) : super(key: key);
-  Product product;
+  ProductDetailWidget({Key? key, this.product}) : super(key: key);
+  Product? product;
 
   @override
   _ProductDetailWidgetState createState() =>
@@ -16,9 +21,10 @@ class ProductDetailWidget extends StatefulWidget {
 }
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
-  Product product;
+  Product? product;
+  DBHelper? db = DBHelper();
 
-  _ProductDetailWidgetState({required this.product});
+  _ProductDetailWidgetState({this.product});
 
   final CarouselController _controller = CarouselController();
   int _current = 0;
@@ -26,112 +32,144 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        color: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    child: productImages(
-                        product.images as List<ImageType>?, context)),
-                Visibility(
-                    visible: product.calculateDiscount() > 0,
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(color: Colors.green),
-                        child: Text(
-                          '${product.calculateDiscount()}% OFF',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
+    var cartProvider = Provider.of<CartProvider>(context, listen: false);
+    if (product != null) {
+      return SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+          child: Stack(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      child: productImages(
+                          product!.images as List<ImageType>?, context)),
+                  Visibility(
+                      visible: product!.calculateDiscount() > 0,
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(color: Colors.green),
+                          child: Text(
+                            '${product!.calculateDiscount()}% OFF',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                    )),
-                SizedBox(height: 5),
-                Text(
-                  product.name,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(product.attributes != null &&
-                            product.attributes.length > 0
-                        ? (product.attributes[0].options.join('-').toString() +
-                            ' ' +
-                            product.attributes[0].name)
-                        : ''),
-                    Text(
-                      '\$${product.calculatePrice().price}',
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CustomStepper(
-                        lowerLimit: 0,
-                        upperLimit: 20,
-                        value: this.qty,
-                        iconSize: 22.0,
-                        stepValue: 1,
-                        onChanged: (value) {
-                          setState(() {
-                            this.qty = value;
-                          });
-                        }),
-                    TextButton(
-                        style: TextButton.styleFrom(
-                            backgroundColor: Colors.redAccent, // foreground
-                            padding: EdgeInsets.all(15),
-                            shape: StadiumBorder()),
-                        onPressed: () {},
-                        child: Text(
-                          'Add to Cart',
-                          style: TextStyle(color: Colors.white),
-                        ))
-                  ],
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                ExpandText(
-                  labelHeader: 'Product Details',
-                  shortDesc: product.shortDescription.substring(0, 150),
-                  desc: product.description,
-                ),
-                Divider(),
-                SizedBox(
-                  height: 10,
-                ),
-                WidgetRelatedProduct(
-                  productIds: this.widget.product.relatedIds,
-                  labelName: 'Related Products',
-                ),
-              ],
-            )
-          ],
+                      )),
+                  SizedBox(height: 5),
+                  Text(
+                    product!.name,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(product?.attributes != null &&
+                              product!.attributes.length > 0
+                          ? (product!.attributes[0].options
+                                  .join('-')
+                                  .toString() +
+                              ' ' +
+                              product!.attributes[0].name)
+                          : ''),
+                      Text(
+                        '\$${product!.calculatePrice().price}',
+                        style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomStepper(
+                          lowerLimit: 0,
+                          upperLimit: 20,
+                          value: this.qty,
+                          iconSize: 22.0,
+                          stepValue: 1,
+                          onChanged: (value) {
+                            setState(() {
+                              this.qty = value;
+                            });
+                          }),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.redAccent, // foreground
+                              padding: EdgeInsets.all(15),
+                              shape: StadiumBorder()),
+                          onPressed: () {
+                            Cart cart = Cart(
+                                id: product!.id,
+                                name: product?.name ?? 'Example',
+                                sku: product?.sku ?? '0',
+                                price: product?.price ?? "0.0",
+                                regularPrice: product?.regularPrice ?? "0.0",
+                                salePrice: product?.salePrice ?? "0.0",
+                                images: product!.images,
+                                quantity: qty);
+                            db?.insert(cart).then((value) {
+                              cartProvider.addCounter();
+                              if (product?.calculatePrice().price != '0') {
+                                cartProvider.addTotalPrice(double.parse(
+                                    product!.calculatePrice().price as String));
+                              }
+                              print(
+                                  'Product is added successfully! ${value.toString()}');
+                            }).catchError((err) {
+                              print(
+                                  'Product is added fail!');
+                              print(err?.toString());
+                              print(cart.toJson());
+                            });
+                          },
+                          child: Text(
+                            'Add to Cart',
+                            style: TextStyle(color: Colors.white),
+                          ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  ExpandText(
+                    labelHeader: 'Product Details',
+                    shortDesc: product!.shortDescription.substring(0, 150),
+                    desc: product!.description,
+                  ),
+                  Divider(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  WidgetRelatedProduct(
+                    productIds: this.widget.product!.relatedIds,
+                    labelName: 'Related Products',
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return SizedBox();
+    }
   }
 
   Widget productImages(List<ImageType>? images, BuildContext context) {

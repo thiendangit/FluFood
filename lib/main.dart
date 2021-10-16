@@ -1,5 +1,7 @@
 import 'package:flufood/pages/home_page.dart';
+import 'package:flufood/pages/product_detail_page.dart';
 import 'package:flufood/pages/product_page.dart';
+import 'package:flufood/provider/cart_provider.dart';
 import 'package:flufood/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -17,9 +19,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => ProductProvider(),
+          create: (_) => ProductProvider(),
           child: ProductPage(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+          child: HomePage(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+          child: ProductDetailPage(),
+        ),
       ],
       child: MaterialApp(
         title: 'FluFood',

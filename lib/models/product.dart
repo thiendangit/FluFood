@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final product = productFromJson(jsonString);
 import 'dart:convert';
 
 Product productFromJson(String str) => Product.fromJson(json.decode(str));
@@ -18,7 +15,7 @@ class Product {
   Product({
     required this.id,
     required this.name,
-    required this.slug,
+    this.slug,
     required this.permalink,
     required this.dateCreated,
     required this.dateCreatedGmt,
@@ -88,14 +85,14 @@ class Product {
 
   int id;
   String name;
-  String slug;
+  String? slug;
   String permalink;
   DateTime dateCreated;
   DateTime dateCreatedGmt;
   DateTime dateModified;
   DateTime dateModifiedGmt;
   String type;
-  String status;
+  String? status;
   dynamic featured;
   String catalogVisibility;
   String description;

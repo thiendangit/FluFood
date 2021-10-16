@@ -152,7 +152,7 @@ packages:
       name: flutter_math_fork
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.2"
+    version: "0.4.2+1"
   flutter_svg:
     dependency: transitive
     description:

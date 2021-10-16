@@ -13,12 +13,12 @@ class DashboardPage extends StatefulWidget {
 }
 
 final List<String> imgList = [
-  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm9YJ3iuDQzK8G7ieZtB5PyIL138Xin0XqW1xGagLjLRDxPTsVn9p2TiQMjpPV5ChXP7Q&usqp=CAU'
+  'https://img.freepik.com/free-vector/modern-black-friday-sale-banner-template-with-3d-background-red-splash_1361-1877.jpg?size=626&ext=jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ql0qNZ1Xkj9Pn34zW8PzKmI8EP5AruriaBgI9ohzRN6xiiLZjX3Z9UYS1aTuWy54hgs&usqp=CAU',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQoWhLhSFlv20jarcdwWxsnJt1DSQgyVUG0oPCz62ow-BviifGBM53TtMT1xqXR6nJKC4&usqp=CAU',
+  'https://previews.123rf.com/images/elenabsl/elenabsl1509/elenabsl150900091/46200067-fashion-clothing-store-banner-with-shop-interior-clothing-on-hangers-and-shelves-fitting-rooms-and-c.jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo4KqcfO156yczF_Pe7Uew1cPMaabKZTKRGQ&usqp=CAU'
 ];
 
 class _DashboardPageState extends State<DashboardPage> {
@@ -37,7 +37,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 items: imageSliders,
                 carouselController: _controller,
                 options: CarouselOptions(
-                    // autoPlay: true,
+                    autoPlay: true,
                     enlargeCenterPage: true,
                     aspectRatio: 2.0,
                     onPageChanged: (index, reason) {
@@ -49,7 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
             Container(
               alignment: Alignment.bottomLeft,
-              height: 190,
+              height: 175,
               child: Container(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,

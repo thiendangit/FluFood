@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'base_page.dart';
 
 class ProductDetailPage extends BasePage {
-  ProductDetailPage({Key? key, required this.product}) : super(key: key);
-  Product product;
+  ProductDetailPage({Key? key, this.product}) : super(key: key);
+  Product? product;
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();

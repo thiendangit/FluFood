@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flufood/models/product.dart';
 
 Cart productFromJson(String str) => Cart.fromJson(json.decode(str));
 
@@ -20,6 +21,7 @@ class Cart {
     required this.regularPrice,
     required this.salePrice,
     required this.images,
+    required this.quantity,
   });
 
   int id;
@@ -29,19 +31,19 @@ class Cart {
   String? regularPrice;
   String salePrice;
   List<ImageType>? images;
+  int? quantity;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
-        id: json["id"],
-        name: json["name"],
-        sku: json["sku"],
-        price: json["price"],
-        regularPrice: json["regular_price"],
-        salePrice: json["sale_price"] != ''
-            ? json["sale_price"]
-            : json["regular_price"],
-        images: List<ImageType>.from(
-            json["images"].map((x) => ImageType.fromJson(x))),
-      );
+      id: json["id"],
+      name: json["name"],
+      sku: json["sku"],
+      price: json["price"],
+      regularPrice: json["regular_price"],
+      salePrice:
+          json["sale_price"] != '' ? json["sale_price"] : json["regular_price"],
+      images: List<ImageType>.from(
+          json["images"].map((x) => ImageType.fromJson(x))),
+      quantity: json["quantity"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -53,6 +55,7 @@ class Cart {
         "images": images != null
             ? List<dynamic>.from(images!.map((x) => x.toJson()))
             : null,
+        "quantity": quantity
       };
 
   calculateDiscount() {
@@ -86,52 +89,4 @@ class Cart {
         : '0';
     return PriceResponse(price: realPrice, salesPrice: salesPriceDisplay);
   }
-}
-
-class ImageType {
-  ImageType({
-    required this.id,
-    required this.dateCreated,
-    required this.dateCreatedGmt,
-    required this.dateModified,
-    required this.dateModifiedGmt,
-    required this.src,
-    required this.name,
-    required this.alt,
-    required this.position,
-  });
-
-  dynamic id;
-  DateTime dateCreated;
-  DateTime dateCreatedGmt;
-  DateTime dateModified;
-  DateTime dateModifiedGmt;
-  String src;
-  String name;
-  String alt;
-  dynamic position;
-
-  factory ImageType.fromJson(Map<String, dynamic> json) => ImageType(
-        id: json["id"],
-        dateCreated: DateTime.parse(json["date_created"]),
-        dateCreatedGmt: DateTime.parse(json["date_created_gmt"]),
-        dateModified: DateTime.parse(json["date_modified"]),
-        dateModifiedGmt: DateTime.parse(json["date_modified_gmt"]),
-        src: json["src"],
-        name: json["name"],
-        alt: json["alt"],
-        position: json["position"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "date_created": dateCreated.toIso8601String(),
-        "date_created_gmt": dateCreatedGmt.toIso8601String(),
-        "date_modified": dateModified.toIso8601String(),
-        "date_modified_gmt": dateModifiedGmt.toIso8601String(),
-        "src": src,
-        "name": name,
-        "alt": alt,
-        "position": position,
-      };
 }
