@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 
 class DBHelper {
   static Database? _db;
+  static final table = 'cart';
 
   Future<Database?> get db async {
     if (_db != null) {
@@ -32,21 +33,22 @@ class DBHelper {
   // List<ImageType>? images;
   // int quantity;
   _onCreate(Database database, int version) async {
-    await database.execute(''
-        'CREATE TABLE cart('
-        'id INTEGER PRIMARY KEY,'
-        'name TEXT,'
-        'sku TEXT,'
-        'price INTEGER,'
-        'regularPrice INTEGER,'
-        'salePrice INTEGER,'
-        'quantity INTEGER,'
-        'images BLOB)');
+    await database.execute('''
+        CREATE TABLE cart(
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        sku TEXT,
+        price INTEGER,
+        regularPrice INTEGER,
+        salePrice INTEGER,
+        quantity INTEGER,
+        images BLOB)
+        ''');
   }
 
   Future<Cart?> insert(Cart cart) async {
-    var dbClient = await db;
-    await dbClient?.insert('cart', cart.toJson());
+    var dbClient = _db;
+    await dbClient?.insert(table, cart.toJson());
     return cart;
   }
 }

@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
           child: Badge(
             position: BadgePosition.topEnd(top: -15),
             badgeContent: Consumer<CartProvider>(
-              builder: (context, value, child) {
+              builder: (context, value, _) {
                 return Text(
                   value.counter.toString(),
                   style: TextStyle(color: Colors.white),

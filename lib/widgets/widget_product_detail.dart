@@ -22,9 +22,10 @@ class ProductDetailWidget extends StatefulWidget {
 
 class _ProductDetailWidgetState extends State<ProductDetailWidget> {
   Product? product;
-  DBHelper? db = DBHelper();
 
   _ProductDetailWidgetState({this.product});
+
+  DBHelper? db = DBHelper();
 
   final CarouselController _controller = CarouselController();
   int _current = 0;
@@ -32,7 +33,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     if (product != null) {
       return SingleChildScrollView(
         child: Container(
@@ -133,8 +134,7 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               print(
                                   'Product is added successfully! ${value.toString()}');
                             }).catchError((err) {
-                              print(
-                                  'Product is added fail!');
+                              print('Product is added fail!');
                               print(err?.toString());
                               print(cart.toJson());
                             });
