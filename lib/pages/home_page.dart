@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flufood/pages/dashboard_page.dart';
 import 'package:flufood/utils/cart_icons.dart';
 import 'package:flutter/cupertino.dart';
@@ -58,8 +59,19 @@ class _HomePageState extends State<HomePage> {
       actions: [
         Icon(Icons.notifications_none, color: Colors.white),
         SizedBox(width: 10),
-        Icon(Icons.shopping_cart_sharp, color: Colors.white),
-        SizedBox(width: 10),
+        Center(
+            child: Badge(
+              position: BadgePosition.topEnd(top: -15),
+              badgeContent: Text(
+                '0',
+                style: TextStyle(color: Colors.white),
+              ),
+              animationDuration: Duration(microseconds: 300),
+              badgeColor: Colors.blue,
+              child: Icon(Icons.shopping_cart_sharp, color: Colors.white),
+            ),
+        ),
+        SizedBox(width: 15),
       ],
     );
   }
