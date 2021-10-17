@@ -1,9 +1,12 @@
+import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flufood/provider/cart_provider.dart';
 import 'package:flufood/services/api_contanst.dart';
 import 'package:flufood/widgets/widget_home_categories.dart';
 import 'package:flufood/widgets/widget_home_products.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class DashboardPage extends StatefulWidget {
 
 final List<String> imgList = [
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTm9YJ3iuDQzK8G7ieZtB5PyIL138Xin0XqW1xGagLjLRDxPTsVn9p2TiQMjpPV5ChXP7Q&usqp=CAU'
-  'https://img.freepik.com/free-vector/modern-black-friday-sale-banner-template-with-3d-background-red-splash_1361-1877.jpg?size=626&ext=jpg',
+      'https://img.freepik.com/free-vector/modern-black-friday-sale-banner-template-with-3d-background-red-splash_1361-1877.jpg?size=626&ext=jpg',
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Ql0qNZ1Xkj9Pn34zW8PzKmI8EP5AruriaBgI9ohzRN6xiiLZjX3Z9UYS1aTuWy54hgs&usqp=CAU',
   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQoWhLhSFlv20jarcdwWxsnJt1DSQgyVUG0oPCz62ow-BviifGBM53TtMT1xqXR6nJKC4&usqp=CAU',
   'https://previews.123rf.com/images/elenabsl/elenabsl1509/elenabsl150900091/46200067-fashion-clothing-store-banner-with-shop-interior-clothing-on-hangers-and-shelves-fitting-rooms-and-c.jpg',
@@ -28,6 +31,8 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(60), child: _buildAppBar()),
       body: Container(
           child: ListView(
         children: [
@@ -79,10 +84,44 @@ class _DashboardPageState extends State<DashboardPage> {
               labelName: "Best selling products",
               tagId: ApiConfig.bestSellingTagID),
           WidgetHomeProducts(
-              labelName: "Recommend for you",
-              tagId: ApiConfig.recommendTagID),
+              labelName: "Recommend for you", tagId: ApiConfig.recommendTagID),
         ],
       )),
+    );
+  }
+
+  Widget _buildAppBar() {
+    return AppBar(
+      title: Text(
+        'FluFood',
+        style: TextStyle(color: Colors.white),
+      ),
+      centerTitle: true,
+      brightness: Brightness.dark,
+      elevation: 0,
+      backgroundColor: Colors.redAccent,
+      automaticallyImplyLeading: false,
+      actions: [
+        Icon(Icons.notifications_none, color: Colors.white),
+        SizedBox(width: 10),
+        Center(
+          child: Badge(
+            position: BadgePosition.topEnd(top: -15),
+            badgeContent: Consumer<CartProvider>(
+              builder: (context, value, _) {
+                return Text(
+                  value.counter.toString(),
+                  style: TextStyle(color: Colors.white),
+                );
+              },
+            ),
+            animationDuration: Duration(microseconds: 300),
+            badgeColor: Colors.blue,
+            child: Icon(Icons.shopping_cart_sharp, color: Colors.white),
+          ),
+        ),
+        SizedBox(width: 15),
+      ],
     );
   }
 

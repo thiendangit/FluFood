@@ -1,3 +1,4 @@
+import 'package:flufood/pages/cart_page.dart';
 import 'package:flufood/utils/ProgressHUD.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,13 @@ class BasePageState<T extends BasePage> extends State<T> {
       actions: [
         Icon(Icons.notifications_none, color: Colors.white),
         SizedBox(width: 10),
-        Icon(Icons.shopping_cart_sharp, color: Colors.white),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => CartPage()));
+          },
+          child: Icon(Icons.shopping_cart_sharp, color: Colors.white),
+        ),
         SizedBox(width: 10),
       ],
     );

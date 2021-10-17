@@ -18,8 +18,8 @@ class Cart {
     required this.name,
     required this.sku,
     required this.price,
-    required this.regularPrice,
-    required this.salePrice,
+    required this.regular_price,
+    required this.sale_price,
     required this.images,
     required this.quantity,
   });
@@ -28,9 +28,9 @@ class Cart {
   String name;
   String sku;
   String? price;
-  String? regularPrice;
-  String salePrice;
-  List<ImageType>? images;
+  String? regular_price;
+  String sale_price;
+  String? images;
   int? quantity;
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
@@ -38,11 +38,10 @@ class Cart {
       name: json["name"],
       sku: json["sku"],
       price: json["price"],
-      regularPrice: json["regular_price"],
-      salePrice:
+      regular_price: json["regular_price"],
+      sale_price:
           json["sale_price"] != '' ? json["sale_price"] : json["regular_price"],
-      images: List<ImageType>.from(
-          json["images"].map((x) => ImageType.fromJson(x))),
+      images: json["images"],
       quantity: json["quantity"]);
 
   Map<String, dynamic> toJson() => {
@@ -50,19 +49,17 @@ class Cart {
         "name": name,
         "sku": sku,
         "price": price,
-        "regular_price": regularPrice.toString(),
-        "sale_price": salePrice,
-        "images": images != null
-            ? List<dynamic>.from(images!.map((x) => x.toJson()))
-            : null,
+        "regular_price": regular_price.toString(),
+        "sale_price": sale_price,
+        "images": images != null ? images : '',
         "quantity": quantity
       };
 
   calculateDiscount() {
-    if (this.regularPrice != '') {
-      double regularPrice = double.parse(this.regularPrice as String);
+    if (this.regular_price != '') {
+      double regularPrice = double.parse(this.regular_price as String);
       double salesPrice =
-          this.salePrice != '' ? double.parse(this.salePrice) : regularPrice;
+          this.sale_price != '' ? double.parse(this.sale_price) : regularPrice;
       double discount = regularPrice - salesPrice;
       double disPercent = (discount / regularPrice) * 100;
       return disPercent.round();
@@ -72,15 +69,15 @@ class Cart {
   }
 
   PriceResponse calculatePrice() {
-    var realPrice = this.salePrice != ""
-        ? this.salePrice
-        : this.regularPrice != ""
-            ? this.regularPrice
+    var realPrice = this.sale_price != ""
+        ? this.sale_price
+        : this.regular_price != ""
+            ? this.regular_price
             : this.price != ""
                 ? this.price
                 : '0';
-    var salesPrice = this.regularPrice != ""
-        ? this.regularPrice
+    var salesPrice = this.regular_price != ""
+        ? this.regular_price
         : this.price != ""
             ? this.price
             : '0';

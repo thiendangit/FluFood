@@ -25,8 +25,6 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
 
   _ProductDetailWidgetState({this.product});
 
-  DBHelper? db = DBHelper();
-
   final CarouselController _controller = CarouselController();
   int _current = 0;
   int qty = 0;
@@ -119,13 +117,17 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                             Cart cart = Cart(
                                 id: product!.id,
                                 name: product?.name ?? 'Example',
-                                sku: product?.sku ?? '0',
+                                sku: '2',
                                 price: product?.price ?? "0.0",
-                                regularPrice: product?.regularPrice ?? "0.0",
-                                salePrice: product?.salePrice ?? "0.0",
-                                images: product!.images,
+                                regular_price: product?.regularPrice ?? "0.0",
+                                sale_price: product?.salePrice ?? "0.0",
+                                images: ((product!.images!.length > 0 &&
+                                            product!.images![0].src != null)
+                                        ? product!.images![0].src
+                                        : 'https://langmaster.edu.vn/public/files/no-photo.png')
+                                    .toString(),
                                 quantity: qty);
-                            db?.insert(cart).then((value) {
+                            DBHelper.instance.insert(cart).then((value) {
                               cartProvider.addCounter();
                               if (product?.calculatePrice().price != '0') {
                                 cartProvider.addTotalPrice(double.parse(

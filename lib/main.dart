@@ -1,3 +1,4 @@
+import 'package:flufood/pages/cart_page.dart';
 import 'package:flufood/pages/home_page.dart';
 import 'package:flufood/pages/product_detail_page.dart';
 import 'package:flufood/pages/product_page.dart';
@@ -9,6 +10,7 @@ import 'package:provider/provider.dart';
 
 Future main() async {
   await dotenv.load(fileName: ".env");
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -29,6 +31,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
           child: ProductDetailPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+          child: CartPage(),
         ),
       ],
       child: MaterialApp(

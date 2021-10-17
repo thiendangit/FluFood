@@ -6,21 +6,17 @@ import 'package:path/path.dart';
 
 class DBHelper {
   static Database? _db;
-  static final table = 'cart';
 
-  Future<Database?> get db async {
-    if (_db != null) {
-      return db;
-    }
+  DBHelper._privateConstructor();
 
-    _db = await initialDatabase();
-  }
+  static final DBHelper instance = DBHelper._privateConstructor();
+
+  Future<Database> get db async => _db ??= await initialDatabase();
 
   initialDatabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'cart.db');
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   // Cart model
@@ -32,23 +28,38 @@ class DBHelper {
   // String salePrice;
   // List<ImageType>? images;
   // int quantity;
-  _onCreate(Database database, int version) async {
-    await database.execute('''
+  _onCreate(Database db, int version) {
+    db.execute('''
         CREATE TABLE cart(
         id INTEGER PRIMARY KEY,
+        product_id INTEGER,
         name TEXT,
         sku TEXT,
-        price INTEGER,
-        regularPrice INTEGER,
-        salePrice INTEGER,
-        quantity INTEGER,
-        images BLOB)
+        price TEXT,
+        regular_price TEXT,
+        sale_price TEXT,
+        images TEXT,
+        quantity INTEGER)
         ''');
   }
 
   Future<Cart?> insert(Cart cart) async {
-    var dbClient = _db;
-    await dbClient?.insert(table, cart.toJson());
+    Database dbClient = await instance.db;
+    await dbClient.insert(
+      'cart',
+      cart.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
     return cart;
+  }
+
+  Future<List<Cart>> getCartList() async {
+    Database dbClient = await instance.db;
+    final List<Map<String, dynamic>> queryResult = await dbClient.query('cart');
+    List<Cart>? result = queryResult.isNotEmpty
+        ? queryResult.map((e) => Cart.fromJson(e)).toList()
+        : [];
+    print('result, ${result.toString()}');
+    return result;
   }
 }
