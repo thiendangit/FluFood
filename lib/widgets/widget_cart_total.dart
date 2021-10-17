@@ -13,20 +13,23 @@ class _WidgetCartTotalState extends State<WidgetCartTotal> {
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(builder: (context, value, child) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Sub total :',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-            Text(
-              '\$' + ' ' + value.getTotalPrice().toStringAsFixed(2),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
-      );
+      return Visibility(
+          visible: value.getTotalPrice() > 0,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Sub total :',
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
+                Text(
+                  '\$' + ' ' + value.getTotalPrice().toStringAsFixed(2),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+          ));
     });
   }
 }

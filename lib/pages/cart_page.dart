@@ -1,6 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:flufood/models/cart.dart';
 import 'package:flufood/provider/cart_provider.dart';
+import 'package:flufood/utils/custom_stepper.dart';
+import 'package:flufood/utils/db_helper.dart';
 import 'package:flufood/widgets/widget_cart_total.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -115,24 +117,61 @@ class _CartPageState extends State<CartPage> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              Icon(
-                                                Icons.delete,
-                                                color: Colors.blueAccent,
+                                              InkWell(
+                                                onTap: () {
+                                                  DBHelper.instance
+                                                      .delete(product.id);
+                                                  cart.removeCounter();
+                                                  cart.removeTotalPrice(
+                                                      double.parse(product
+                                                          .calculatePrice()
+                                                          .price
+                                                          .toString()));
+                                                },
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.blueAccent,
+                                                ),
                                               ),
                                               SizedBox(height: 15),
-                                              TextButton(
-                                                  onPressed: () {},
-                                                  style: TextButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.redAccent,
-                                                    // foreground
-                                                    padding: EdgeInsets.all(15),
-                                                  ),
-                                                  child: Text(
-                                                    'Remove',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ))
+                                              CustomStepper(
+                                                  lowerLimit: 0,
+                                                  upperLimit: 20,
+                                                  value: (int.parse(product
+                                                      .quantity
+                                                      .toString())),
+                                                  iconSize: 22.0,
+                                                  stepValue: 1,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      DBHelper.instance
+                                                          .updateQuantity(
+                                                              product.id,
+                                                              int.parse(value
+                                                                  .toString()))
+                                                          .then((_value) {
+                                                        cart.updateCounter(
+                                                            res.data!.length);
+                                                        if ((int.parse(value
+                                                                .toString())) >
+                                                            (int.parse(product
+                                                                .quantity
+                                                                .toString()))) {
+                                                          cart.addTotalPrice(
+                                                              double.parse(product
+                                                                  .calculatePrice()
+                                                                  .price
+                                                                  .toString()));
+                                                        } else {
+                                                          cart.removeTotalPrice(
+                                                              double.parse(product
+                                                                  .calculatePrice()
+                                                                  .price
+                                                                  .toString()));
+                                                        }
+                                                      });
+                                                    });
+                                                  })
                                             ],
                                           )
                                         ],

@@ -114,32 +114,62 @@ class _ProductDetailWidgetState extends State<ProductDetailWidget> {
                               padding: EdgeInsets.all(15),
                               shape: StadiumBorder()),
                           onPressed: () {
-                            Cart cart = Cart(
-                                id: product!.id,
-                                name: product?.name ?? 'Example',
-                                sku: '2',
-                                price: product?.price ?? "0.0",
-                                regular_price: product?.regularPrice ?? "0.0",
-                                sale_price: product?.salePrice ?? "0.0",
-                                images: ((product!.images!.length > 0 &&
-                                            product!.images![0].src != null)
-                                        ? product!.images![0].src
-                                        : 'https://langmaster.edu.vn/public/files/no-photo.png')
-                                    .toString(),
-                                quantity: qty);
-                            DBHelper.instance.insert(cart).then((value) {
-                              cartProvider.addCounter();
-                              if (product?.calculatePrice().price != '0') {
-                                cartProvider.addTotalPrice(double.parse(
-                                    product!.calculatePrice().price as String));
-                              }
-                              print(
-                                  'Product is added successfully! ${value.toString()}');
-                            }).catchError((err) {
-                              print('Product is added fail!');
-                              print(err?.toString());
-                              print(cart.toJson());
-                            });
+                            if (qty > 0) {
+                              Cart cart = Cart(
+                                  id: product!.id,
+                                  name: product?.name ?? 'Example',
+                                  sku: '2',
+                                  price: product?.price ?? "0.0",
+                                  regular_price: product?.regularPrice ?? "0.0",
+                                  sale_price: product?.salePrice ?? "0.0",
+                                  images: ((product!.images!.length > 0 &&
+                                              product!.images![0].src != null)
+                                          ? product!.images![0].src
+                                          : 'https://langmaster.edu.vn/public/files/no-photo.png')
+                                      .toString(),
+                                  quantity: qty);
+                              DBHelper.instance.insert(cart).then((value) {
+                                cartProvider.addCounter();
+                                if (product?.calculatePrice().price != '0') {
+                                  cartProvider.addTotalPrice(double.parse(
+                                          product!.calculatePrice().price
+                                              as String) *
+                                      qty);
+                                }
+                                print(
+                                    'Product is added successfully! ${value.toString()}');
+                              }).catchError((err) {
+                                print('Product is added fail!');
+                                print(err?.toString());
+                                print(cart.toJson());
+                              });
+                            } else {
+                              showDialog<void>(
+                                  context: context,
+                                  barrierDismissible: false,
+                                  // user must tap button!
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Cart notification'),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const <Widget>[
+                                            Text(
+                                                'Can\'t add to cart with quantity is 0 !.'),
+                                          ],
+                                        ),
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text('OK'),
+                                          onPressed: () {
+                                            Navigator.pop(context, 'OK');
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            }
                           },
                           child: Text(
                             'Add to Cart',

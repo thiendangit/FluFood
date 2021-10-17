@@ -43,6 +43,12 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateCounter(int count) {
+    _counter = count;
+    setPrefItem();
+    notifyListeners();
+  }
+
   void removeCounter() {
     _counter--;
     setPrefItem();
