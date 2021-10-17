@@ -68,6 +68,15 @@ class DBHelper {
     );
   }
 
+  Future<Cart?> getProductQtyByID(int id) async {
+    Database dbClient = await instance.db;
+    await dbClient.query(
+      'cart',
+      where: 'id=?',
+      whereArgs: [id],
+    );
+  }
+
   Future<List<Cart>> getCartList() async {
     Database dbClient = await instance.db;
     final List<Map<String, dynamic>> queryResult = await dbClient.query('cart');

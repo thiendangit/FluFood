@@ -117,7 +117,13 @@ class _WidgetCategoriesState extends State<WidgetCategories> {
                     ),
                     Row(
                       children: [
-                        Text(item.name),
+                        Text(item.slug
+                                .replaceAll('-', ' ')
+                                .substring(0, 1)
+                                .toUpperCase() +
+                            item.slug
+                                .replaceAll('-', ' ')
+                                .substring(1, item.slug.length)),
                         Icon(
                           Icons.keyboard_arrow_right,
                           size: 14,
