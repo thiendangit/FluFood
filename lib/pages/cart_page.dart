@@ -57,8 +57,31 @@ class _CartPageState extends State<CartPage> {
             FutureBuilder(
                 future: cart.getData(),
                 builder: (context, AsyncSnapshot<List<Cart>> res) {
-                  print(res.hasData);
                   if (res.hasData && res.data != null) {
+                    if (res.data!.isEmpty) {
+                      return Container(
+                          margin: EdgeInsets.only(top: 100),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 20),
+                                  child: Image(
+                                    image: AssetImage(
+                                        'assets/images/empty_cart.png'),
+                                    height: 250,
+                                    width: 250,
+                                  ),
+                                ),
+                                SizedBox(height: 30),
+                                Text(
+                                  'Explore products you are like !.',
+                                  style: Theme.of(context).textTheme.headline6,
+                                )
+                              ],
+                            ),
+                          ));
+                    }
                     return Expanded(
                         child: ListView.builder(
                             itemCount: res.data!.length,
@@ -124,9 +147,12 @@ class _CartPageState extends State<CartPage> {
                                                   cart.removeCounter();
                                                   cart.removeTotalPrice(
                                                       double.parse(product
-                                                          .calculatePrice()
-                                                          .price
-                                                          .toString()));
+                                                              .calculatePrice()
+                                                              .price
+                                                              .toString() *
+                                                          int.parse(product
+                                                              .quantity
+                                                              .toString())));
                                                 },
                                                 child: Icon(
                                                   Icons.delete,
