@@ -61,8 +61,13 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void getTotalItem() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _totalPrice = prefs.getDouble(cartTotalPriceKey) ?? 0.0;
+  }
+
   double getTotalPrice() {
-    getPrefItem();
+    getTotalItem();
     return _totalPrice;
   }
 }
