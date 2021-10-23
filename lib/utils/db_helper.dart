@@ -83,7 +83,6 @@ class DBHelper {
     List<Cart>? result = queryResult.isNotEmpty
         ? queryResult.map((e) => Cart.fromJson(e)).toList()
         : [];
-    print('result, ${result.toString()}');
     return result;
   }
 }

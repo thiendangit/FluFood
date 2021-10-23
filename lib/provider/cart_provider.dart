@@ -19,7 +19,10 @@ class CartProvider with ChangeNotifier {
   Future<List<Cart>> get cart => _cart;
 
   Future<List<Cart>> getData() async {
-    _cart = DBHelper.instance.getCartList();
+    Future<List<Cart>> cartFuture = DBHelper.instance.getCartList();
+    _cart = cartFuture;
+    // update cart
+    await cartFuture.then((value) => updateCounter(value.length));
     return _cart;
   }
 
