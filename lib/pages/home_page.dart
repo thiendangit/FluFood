@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flufood/pages/cart_page.dart';
 import 'package:flufood/pages/dashboard_page.dart';
 import 'package:flufood/pages/favorite_page.dart';
@@ -27,6 +26,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var cart = Provider.of<CartProvider>(context);
+    cart.getData();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: [
