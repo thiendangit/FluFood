@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var cart = Provider.of<CartProvider>(context);
     cart.getData();
+    cart.getTotalPrice();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: [

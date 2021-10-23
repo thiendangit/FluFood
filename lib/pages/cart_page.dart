@@ -145,14 +145,18 @@ class _CartPageState extends State<CartPage> {
                                                   DBHelper.instance
                                                       .delete(product.id);
                                                   cart.removeCounter();
-                                                  cart.removeTotalPrice(
-                                                      double.parse(product
+                                                  int qty = int.parse(product
+                                                      .quantity
+                                                      .toString());
+                                                  double newTotal =
+                                                      (double.parse(product
                                                               .calculatePrice()
                                                               .price
-                                                              .toString() *
-                                                          int.parse(product
-                                                              .quantity
-                                                              .toString())));
+                                                              .toString()) *
+                                                          (int.parse(
+                                                              qty.toString())));
+                                                  cart.removeTotalPrice(
+                                                      newTotal);
                                                 },
                                                 child: Icon(
                                                   Icons.delete,
@@ -183,11 +187,12 @@ class _CartPageState extends State<CartPage> {
                                                             (int.parse(product
                                                                 .quantity
                                                                 .toString()))) {
-                                                          cart.addTotalPrice(
-                                                              double.parse(product
-                                                                  .calculatePrice()
-                                                                  .price
-                                                                  .toString()));
+                                                          // cart.addTotalPrice(
+                                                          //     double.parse(product
+                                                          //         .calculatePrice()
+                                                          //         .price
+                                                          //         .toString()));
+                                                          cart.updatePrice(0);
                                                         } else {
                                                           cart.removeTotalPrice(
                                                               double.parse(product

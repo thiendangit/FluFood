@@ -18,11 +18,15 @@ class CartProvider with ChangeNotifier {
 
   Future<List<Cart>> get cart => _cart;
 
+  handlePrice(value) {
+    // updateCounter(value.length);
+  }
+
   Future<List<Cart>> getData() async {
     Future<List<Cart>> cartFuture = DBHelper.instance.getCartList();
     _cart = cartFuture;
     // update cart
-    await cartFuture.then((value) => updateCounter(value.length));
+    await cartFuture.then((value) => handlePrice(value));
     return _cart;
   }
 
@@ -59,6 +63,7 @@ class CartProvider with ChangeNotifier {
   }
 
   void addTotalPrice(double totalPrice) {
+    print('totalPrice ${totalPrice}');
     _totalPrice += totalPrice;
     setPrefItem();
     notifyListeners();
